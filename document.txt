@@ -1,0 +1,247 @@
+Product goals (for the frontend)
+
+Mobile-first, fully responsive app that supports Browse → Search → Property Detail → Chat/Contact → Post Listing flows.
+
+Fast, smooth UI: micro-interactions and page transitions with Framer Motion and GSAP (for complex sequences), and Lenis for smooth scrolling momentum.
+
+Clear trust signals: verified badges, owner/agent labels, reviews, price transparency (like NoBroker). 
+Google Play
+
+Modular, testable React codebase (component-first, easy to convert to design system).
+
+Tech stack (frontend-only)
+
+React (create-react-app or Vite) — NOT Next.js (you specified React only).
+
+React Router v6 for navigation.
+
+State: React Query (for data + cache) + Context or Redux for UI global state (auth, theme).
+
+Styling: Tailwind CSS (recommended for speed & responsive utilities) or CSS Modules.
+
+Animations: Framer Motion for route/page transitions & simple micro-interactions; GSAP for heavy timeline animations (hero, complex listing carousel); Lenis for smooth scrolling on long pages.
+
+Maps: Google Maps JS / Mapbox for property maps. 
+99acres
+
+Icons: lucide-react or Heroicons.
+
+Testing: Jest + React Testing Library.
+
+Lint/format: ESLint + Prettier.
+
+App structure & folder layout (high-level)
+/src
+  /api            // API wrappers (mock or real)
+  /components
+    /common       // Button, Input, Avatar, Badge, Skeleton
+    /layouts      // MobileLayout, DesktopLayout
+    /property     // PropertyCard, PropertyList, PropertyDetail
+    /search       // SearchBar, FiltersDrawer, MapToggle
+    /auth         // Login, Signup, OTP
+    /post         // PostPropertyForm, ImageUploader
+  /hooks
+  /pages
+    Home.jsx
+    Search.jsx
+    Property.jsx
+    PostProperty.jsx
+    Profile.jsx
+    MyListings.jsx
+  /routes
+  /state
+  /styles
+  main.jsx
+
+Core screens & components (mobile-first)
+
+For each screen I list the purpose, key components, and animation suggestions.
+
+Onboarding / Splash / Auth
+
+Components: Splash, OTP login screen, permission prompts.
+
+Animations: short fade + scale in (Framer Motion); hero reveal timeline with GSAP if needed.
+
+Home (mobile)
+
+Sections: search bar (prominent), category tabs (Buy/Rent/New Projects), highlights (cards), quick filters, location suggestions.
+
+Components: SearchBar (with suggestions), CategoryTabs, FeaturedCarousel (swipeable), HorizontalList cards.
+
+Animations: card parallax on swipe (Framer Motion), small entrance stagger.
+
+Search Results
+
+Features: filters modal/drawer (price, bedrooms, furnished, owner/agent), map toggle (floating button), list vs map toggle.
+
+Components: PropertyList (infinite scroll), MapView (clustered pins), FiltersDrawer.
+
+Animations: filter drawer slide from bottom (Framer Motion), list item hover/tap micro-animations.
+
+Property Detail
+
+Sections: image gallery, price & summary, key specs, amenities, locality map, contact CTA, similar properties, owner/agent profile, reviews.
+
+Components: ImageCarousel (swipe + pinch), SpecGrid, AmenitiesRow (icons), ContactBox.
+
+Animations: GSAP timeline for hero image pinch/expand; Framer Motion for tabbed content transitions.
+
+Post Property Flow (multi-step)
+
+Steps: Basic info → Location (map pin) → Photos → Pricing & availability → Preview → Submit.
+
+Components: MultiStepForm, PhotoUploader (multiple, drag reorder), AddressPicker (reverse geocode).
+
+UX: Save progress locally, validate per step.
+
+Profile / Dashboard / My Listings
+
+Components: ListingCard management (edit/publish/unpublish), analytics (views & leads), saved searches, messages.
+
+Animations: subtle card rearrange animation (Framer Motion layout).
+
+Messages / Leads
+
+In-app chat UI or quick contact form with call/email actions.
+
+Extras
+
+Rent payment management (if building), service bookings (NoBroker-like extras).
+
+Visual system (mobile-first)
+
+Breakpoints (mobile-first): base (≤375px), sm: ≥640px, md: ≥768px, lg: ≥1024px, xl: ≥1280px. Use utility classes to scale up.
+
+Grid: single column on mobile, 2-column for tablet, 3+ for large screens.
+
+Typography: Inter / Poppins — base size 14–16px for body on mobile.
+
+Colors: Clean, trust-focused palette (Navy / Cyan accents like 99acres or warm red accents like NoBroker) — choose 1 accent, 1 CTA color, neutrals for UI.
+
+Trust elements: Verified badges, owner vs agent tags, price breakdown, local area score, screenshots/images. 
+99acres
++1
+
+Accessibility & performance
+
+Use semantic HTML, aria-labels for buttons and images, alt text for property photos.
+
+Lazy-load images (progressive JPEG / WebP), use image placeholders / skeletons.
+
+Use responsive image sizes (srcset), compress assets.
+
+Keyboard navigation and focus-visible states for key interactive elements.
+
+Lighthouse aims: Performance > 50 (mobile), Accessibility > 90.
+
+Animation plan (concrete)
+
+Page transitions: use Framer Motion <AnimatePresence> with opacity + slight y translation (fast 150–200ms).
+
+Hero listing reveal: GSAP timeline for image parallax + overlay text reveal (when loading property). Use ScrollTrigger if you want scroll-driven animations on Detail page.
+
+Filter drawer & modals: Framer Motion’s spring-driven y slide with backdrop fade.
+
+Lenis: enable for long-scrolling sections (locality maps or blog/product pages). Initialize Lenis at app root; disable on small devices if performance issues.
+
+Micro-interactions: button press scale, saved / liked heart toggle, filter chip toggle using Framer Motion whileTap/whileHover.
+
+Provide animation durations (guidelines): micro 80–140ms, normal 200–360ms, complex timeline 600–1200ms.
+
+Example (Framer Motion small pattern):
+
+<motion.button
+  whileTap={{ scale: 0.96 }}
+  whileHover={{ scale: 1.02 }}
+  transition={{ type: 'spring', stiffness: 300, damping: 18 }}
+>
+  Contact Owner
+</motion.button>
+
+Data / integration plan (frontend)
+
+Use React Query to fetch data, with caching and optimistic updates (e.g., saving a listing).
+
+Provide a mock-api during frontend development (JSON server / MSW) with endpoints: /properties, /search, /users, /auth, /listings/:id, /leads.
+
+Map integration: load map scripts lazily on demand (only when user opens map view) to save initial bundle size. 
+99acres
+
+Component inventory (priority ordering)
+
+SearchBar + Autocomplete
+
+PropertyCard (compact)
+
+PropertyCard (detailed)
+
+ImageCarousel + Lightbox
+
+FiltersDrawer (multi-select chips)
+
+Map with pins clustering
+
+PostProperty multi-step form + uploader
+
+Authentication (OTP)
+
+Messages / Chat UI
+
+Dashboard widgets (my listings, analytics)
+
+Each component should have: props spec, variants, skeleton state, and accessibility notes.
+
+UX & interaction rules (to follow)
+
+Immediate feedback on all taps (skeletons/loading).
+
+Error handling: inline errors in forms, toast for global errors.
+
+Confirm before destructive actions (delete/unpublish).
+
+Offline & slow connection: show cached results, retry controls.
+
+Responsive & mobile-first CSS strategy
+
+Build with mobile-first classes: small screen baseline; gradually add md:, lg: overrides.
+
+Keep components flexible: max-width, min-width, and flex-wrap.
+
+Use touch-friendly hit targets (44–48px min).
+
+For list/map toggles: use bottom-fixed FAB controls (mobile) and move to side controls on desktop.
+
+Deliverables to hand to a UI generator / dev tool
+
+Design tokens: colors, spacing scale (4/8/16), type scale.
+
+Component list (above) with props + states + skeletons.
+
+Screen wireframes: Home, Search, Property Detail, Post Flow, Profile, Messages (simple sketches or Figma frames).
+
+Animation spec: per-screen short bullet points + durations + easing.
+
+API contract (mock): endpoints + request/response shapes.
+
+Accessibility checklist.
+
+Priority roadmap: MVP vs v1 vs v2 (below).
+
+Roadmap & priorities (MVP → V2)
+
+MVP (deliver in 4–6 weeks frontend sprint):
+
+Auth (OTP), Home, Search (list), Property Detail, Post Property (basic), Contact CTA, responsive mobile UI, mock API integration, image lazy-loading.
+v1:
+
+Filters, Map toggle, Save/Like, Profile & My Listings, basic analytics, message/leads UI.
+v2:
+
+In-app payments/rent management, service marketplace, verified badges, advanced analytics, large-screen optimizations.
+
+Example Storyboard (user flows)
+
+New user opens app → sees search → types “Bengaluru” → suggestions appear → filters → result list with infinite scroll → taps property → image gallery open → taps Contact → chooses call or message.
+
+Owner flow: Auth → Post Property → pick location on map → upload photos → preview → publish → sees listing in My Listings.
