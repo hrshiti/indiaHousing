@@ -21,7 +21,7 @@ const SearchPage = () => {
             category: "Apartment", // Added for filtering
             bhk: "3 BHK",
             isVerified: true,
-            image: "https://images.unsplash.com/photo-1600596542815-27b5d0d8f594?q=80&w=600&auto=format&fit=crop",
+            image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=800&auto=format&fit=crop",
             specs: { beds: 3, baths: 3, area: 1850 }
         },
         {

@@ -4,14 +4,14 @@ import Logo from "@/components/common/Logo";
 
 const MobileHeader = () => {
     return (
-        <div className="flex items-center justify-between px-4 py-2 pt-2 md:hidden bg-white/50 backdrop-blur-sm sticky top-0 z-30 h-[80px]">
+        <div className="flex items-center justify-between px-4 py-2 md:hidden bg-white/50 backdrop-blur-sm sticky top-0 z-30 h-20 overflow-hidden">
             {/* Logo & Location */}
-            <div className="flex items-center gap-2">
-                {/* Increased container size significantly */}
-                <div className="h-20 min-w-[80px] flex items-center justify-center -ml-2">
-                    <Logo size="sm" className="w-auto h-full object-contain" />
+            <div className="flex items-center gap-4">
+                {/* Logo Container */}
+                <div className="h-24 w-32 flex items-center justify-start -ml-20">
+                    <Logo className="h-full w-full object-contain scale-[1.8] origin-left" />
                 </div>
-                <div className="flex flex-col justify-center">
+                <div className="flex flex-col justify-center ml-4">
                     <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">
                         Location
                     </span>
